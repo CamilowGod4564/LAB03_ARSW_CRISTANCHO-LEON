@@ -2,7 +2,6 @@ package edu.eci.arsw.blueprints.controllers.dtos;
 
 public record ApiResponse<T>(int code, String message, T data) {
 
-    // Métodos de fábrica para respuestas exitosas
     public static <T> ApiResponse<T> ok(T data) {
         return new ApiResponse<>(200, "Success", data);
     }
