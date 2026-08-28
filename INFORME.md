@@ -1,5 +1,5 @@
 
-## 📖 Informe de Laboratorio
+## Informe de Laboratorio
 
 ### INTEGRANTES
 - Jeyder Nicolay Leon Lancheros
@@ -129,3 +129,30 @@ ya que se confundia con la clase generia que tiene el mismo nombre, por ende en 
 endpoints se ve más completa al momento de importarla.
 
 ![](Img/4b.png)
+
+---
+
+### 5. Filtros y pruebas
+
+Se implementaron los filtros `RedundancyFilter` y `UndersamplingFilter`. El primero elimina puntos duplicados consecutivos y el segundo conserva los puntos con índices pares. Los perfiles `redundancy` y `undersampling` son excluyentes; cuando ninguno está activo, se usa `IdentityFilter`.
+
+La selección se puede verificar ejecutando:
+
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=redundancy
+mvn spring-boot:run -Dspring-boot.run.profiles=undersampling
+```
+
+También se añadieron pruebas unitarias para ambos filtros y pruebas de integración con H2 para creación, consulta y respuestas `400` y `404` de la API. Se ejecutan con:
+
+```bash
+mvn test
+```
+
+Para evidenciar los mensajes almacenados en PostgreSQL con Docker, después de crear un blueprint desde Swagger se puede ejecutar:
+
+```bash
+docker compose exec postgres psql -U postgres -d blueprintsdb -c "SELECT b.author, b.name, p.x, p.y FROM blueprints b JOIN points p ON p.blueprint_id = b.id ORDER BY b.id, p.point_order;"
+```
+
+Las buenas prácticas aplicadas incluyen versionamiento de la API, DTO de respuesta uniforme, validación de solicitudes, manejo centralizado de errores, códigos HTTP semánticos, documentación OpenAPI y persistencia desacoplada por medio de la interfaz `BlueprintPersistence`.

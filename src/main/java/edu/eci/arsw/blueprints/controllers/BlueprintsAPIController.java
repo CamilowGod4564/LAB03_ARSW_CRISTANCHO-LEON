@@ -142,6 +142,10 @@ public class BlueprintsAPIController {
             @PathVariable String bpname,
             @RequestBody Point p) {
         try {
+            if (p == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(ApiResponse.error(400, "Point is required"));
+            }
             services.addPoint(author, bpname, p.x(), p.y());
             return ResponseEntity
                     .status(HttpStatus.ACCEPTED)
